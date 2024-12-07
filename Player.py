@@ -27,29 +27,37 @@ class Player:
     
     def play_mountain(self):
         # if land has not been played this turn and it is currently the players turn also check if the player has a mountain in hand
-        # mountains = [card for card in self.hand if card.name == "Mountain"]
+        # Generator expression and next() is used to find the first mountain in hand
         mountain = next((card for card in self.hand if card.name == "Mountain"), None)
         
-        if mountain:
+        # Checks to see if a mountain has been found in hand and if a land has been played this turn
+        if mountain: # and variable to check if land has been played this turn
             self.hand.remove(mountain)
             self.battlefield.append(mountain)
+        else:
+            print("Action cannot be performed")
     
-    def play_hulking_goblin(self): # WIP
-        # Implement check for number of untapped mana in play and tapping said mountains
-        hulking_goblins = [card for card in self.hand if card.name == "Hulking Goblin"]
-        self.hand.remove(hulking_goblins[0])
-        self.battlefield.append(hulking_goblins[0])
+    def play_hulking_goblin(self):
+        hulking_goblin = next((card for card in self.hand if card.name == "Hulking Goblin"), None)
+
+        if hulking_goblin: # and mana check
+            self.hand.remove(hulking_goblin)
+            self.battlefield.append(hulking_goblin)
+        else:
+            print("Action cannot be performed")
     
     def play_lightning_bolt(self):
-        # see above for removing card from hand
-        lightning_bolts = [card for card in self.hand if card.name == "Lightning Bolt"]
-        self.hand.remove(lightning_bolts[0])
-        self.battlefield.append(lightning_bolts[0])
+        lightning_bolt = next((card for card in self.hand if card.name == "Lightning Bolt"), None)
+
+        if lightning_bolt: # and mana check
+            self.hand.remove(lightning_bolt)
+            self.battlefield.append(lightning_bolt)
+        else:
+            print("Action cannot be performed")
     
     def remove_creature(self):
-        # List comprehension to find and remove gobbo
-        hulking_goblins = [card for card in self.battlefield if card.name == "Hulking Goblin"]
-        self.battlefield.remove(hulking_goblins[0])
+        hulking_goblin = next((card for card in self.hand if card.name == "Hulking Goblin"), None)
+        self.battlefield.remove(hulking_goblin)
         # Append to graveyard
     
     def attack_with_all(self):
