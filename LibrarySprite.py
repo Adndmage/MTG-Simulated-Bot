@@ -1,6 +1,7 @@
 import pygame as pg
 from Gameobject import *
 
+# Sprite for the library mtg card back
 class LibrarySprite(pg.sprite.Sprite):
     def __init__(self):
         super().__init__()
