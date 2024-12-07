@@ -34,7 +34,3 @@ class Gameobject(pg.sprite.Sprite):
     # Potential functionality for tying game actions to specific cards    
     # def add_action(self, action):
     #     self.actions.append(action)
-    
-    # Updates the object sprite
-    def update(self):
-        self.tap_object()
