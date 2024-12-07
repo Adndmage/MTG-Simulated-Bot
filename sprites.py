@@ -11,8 +11,14 @@ class LibrarySprite(pg.sprite.Sprite):
         self.rect = self.image.get_rect(center = (x, y))
 
 class FontSprite(pg.sprite.Sprite):
-    def __init__(self, x, y, font):
+    def __init__(self, x, y, text, font, placement = "center", color = '#000000'):
         super().__init__()
 
-        self.image = font.render('Life: 20', False, '#000000')
-        self.rect = self.image.get_rect(midleft = (x, y))
+        self.image = font.render(text, False, color)
+        self.rect = self.rect = self.image.get_rect(midleft = (x, y))
+
+        if placement == "midleft":
+            self.rect = self.image.get_rect(midleft = (x, y))
+        elif placement == "center":
+            self.rect = self.image.get_rect(center = (x, y))
+        
