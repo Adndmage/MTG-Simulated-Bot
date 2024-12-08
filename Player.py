@@ -34,8 +34,9 @@ class Player:
         if mountain: # and variable to check if land has been played this turn
             self.hand.remove(mountain)
             self.battlefield.append(mountain)
+            return True
         else:
-            print("Action cannot be performed")
+            return False
     
     # Takes a creature from hand and puts it onto the battlefield
     def play_hulking_goblin(self):
@@ -44,8 +45,9 @@ class Player:
         if hulking_goblin: # and mana check
             self.hand.remove(hulking_goblin)
             self.battlefield.append(hulking_goblin)
+            return True
         else:
-            print("Action cannot be performed")
+            return False
     
     # Takes a bolt from hand and puts it onto the battlefield
     def play_lightning_bolt(self):
@@ -53,15 +55,21 @@ class Player:
 
         if lightning_bolt: # and mana check
             self.hand.remove(lightning_bolt)
-            self.battlefield.append(lightning_bolt)
+            return True
         else:
             print("Action cannot be performed")
+            return False
     
     # Removes a creature from the battlefield
     # Since all creatures are the same there is no need to differentiate
     def remove_creature(self):
         hulking_goblin = next((card for card in self.hand if card.name == "Hulking Goblin"), None)
-        self.battlefield.remove(hulking_goblin)
+
+        if hulking_goblin:
+            self.battlefield.remove(hulking_goblin)
+            return True
+        else:
+            return False
         # Append to graveyard
     
     # Takes every creature on the side of the current player and attacks with them
@@ -71,3 +79,5 @@ class Player:
         for card in self.battlefield:
             if card.name == "Hulking Goblin":
                 card.tap_object()
+        
+        return True

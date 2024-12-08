@@ -36,6 +36,8 @@ class Game:
             self.players[0].priority_passed = False
             self.players[1].priority_passed = False
             self.change_phase()
+        
+        return True
     
     # Checks if the game has been won/lost
     def check_gameover(self):
@@ -47,39 +49,59 @@ class Game:
         return False
 
     # Performs a game action based on an input from the player (see main)
-    def perform_gameaction(self, player, actionInputInteger):
+    def perform_gameaction(self, actionInputInteger):
+        player = self.players[self.priority]
+
+        can_action_be_performed = None
+
         # Based on the integer value a specific action is performed
-        if actionInputInteger == 0:
-            self.pass_priority(player)
-        elif actionInputInteger == 1:
-            player.play_mountain()
+        if actionInputInteger == 1:
+            can_action_be_performed = self.pass_priority(player)
         elif actionInputInteger == 2:
-            player.play_hulking_goblin()
+            can_action_be_performed = player.play_mountain()
         elif actionInputInteger == 3:
-            self.play_lightning_bolt_destroy(player)
+            can_action_be_performed = player.play_hulking_goblin()
         elif actionInputInteger == 4:
-            self.play_lightning_bolt_damage(player)
+            can_action_be_performed = self.play_lightning_bolt_destroy(player)
         elif actionInputInteger == 5:
-            player.attack_with_all()
+            can_action_be_performed = self.play_lightning_bolt_damage(player)
+        elif actionInputInteger == 6:
+            can_action_be_performed = player.attack_with_all()
         # elif actionInputInteger == 6: # Implementation of blocking
         #     self.block_with_all_possible(player)
-        else: # Determine if it makes more sense to do the action possible check here or in the methods
+
+        if can_action_be_performed:
+            print("Action has been performed")
+        else:
             print("Action cannot be performed")
     
     # Plays a lightning bolt and destroys a creature
     def play_lightning_bolt_destroy(self, player):
-        player.play_lightning_bolt # Calls method for player playing lightning bolt
+        opponent = None
+        for other_player in self.players:
+            if other_player != player:
+                opponent = other_player
+        
+        # if opponent.
+
+        has_bolt_been_played = player.play_lightning_bolt()
 
         # If statement needs to be added if mana check is within the player method
-        for other_player in self.players:
-            if other_player == player:
-                other_player.remove_creature()
+        if has_bolt_been_played:
+            for other_player in self.players:
+                if other_player != player:
+                    other_player.remove_creature()
+        else:
+            return False
     
     # Plays a lightning bolt dealing damage to the opponent
     def play_lightning_bolt_damage(self, player):
-        player.play_lightning_bolt # Calls method for player playing lightning bolt
+        has_bolt_been_played = player.play_lightning_bolt()
 
-        for other_player in self.players:
-            if other_player == player:
-                other_player.life_total -= 3
-                self.check_gameover()
+        if has_bolt_been_played:
+            for other_player in self.players:
+                if other_player != player:
+                    other_player.life_total -= 3
+                    self.check_gameover()
+        else:
+            return False
