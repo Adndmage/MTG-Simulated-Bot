@@ -92,8 +92,6 @@ while running:
     
     dynamic_text.add(FontSprite(1440, 690, game.phase, 'lucidasanstypewriterregular', 40))
 
-    
-
     # Updates cards in hand and on field
     cards.empty()
     update_board(game, cards)

@@ -35,12 +35,30 @@ def update_board(game, cards):
     
     card_counter = 0
     for card in game.players[0].battlefield:
-        card.sprite = CardSprite(290 + 170 * card_counter, 595, 0.18, card.name)
-        cards.add(card.sprite)
-        card_counter += 1
+        if card.name == "Mountain":
+            card.sprite = CardSprite(290 + 140 * card_counter, 674, 0.12, card.name)
+            cards.add(card.sprite)
+            card_counter += 1
     
     card_counter = 0
     for card in game.players[1].battlefield:
-        card.sprite = CardSprite(290 + 170 * card_counter, 305, 0.18, card.name)
-        cards.add(card.sprite)
-        card_counter += 1
+        if card.name == "Mountain":
+            card.sprite = CardSprite(290 + 140 * card_counter, 227, 0.12, card.name)
+            cards.add(card.sprite)
+            card_counter += 1
+    
+    card_counter = 0
+    for card in game.players[0].battlefield:
+        if card.name == "Hulking Goblin":
+            card.sprite = CardSprite(290 + 170 * card_counter, 532, 0.15, card.name)
+            cards.add(card.sprite)
+            card_counter += 1
+    
+    card_counter = 0
+    for card in game.players[1].battlefield:
+        if card.name == "Hulking Goblin":
+            card.sprite = CardSprite(290 + 170 * card_counter, 369, 0.15, card.name)
+            cards.add(card.sprite)
+            card_counter += 1
+        
+        
