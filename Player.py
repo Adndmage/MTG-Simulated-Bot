@@ -10,7 +10,6 @@ class Player:
             [Gameobject('Hulking Goblin', 'Creature', 2, power=2, toughness=2) for _ in range(12)] +
             [Gameobject('Lightning Bolt', 'Instant', 1) for _ in range(12)]
         )
-
         self.hand = []
         self.battlefield = []
         self.priority_passed = False # Checks if player has passed priority in the current phase
@@ -27,7 +26,7 @@ class Player:
         mountains = [land for land in self.battlefield if land.name == "Mountain" and land.is_tapped == False]
 
         if mana_value <= len(mountains):
-            self.mana_pay(mountains, mana_value)
+            self.mana_pay(mountains, mana_value) # Put this in the play methods instead
 
             return True
         return False
@@ -40,7 +39,7 @@ class Player:
         # Generator expression and next() is used to find the first mountain in hand
         mountain = next((card for card in self.hand if card.name == "Mountain"), None)
         
-        if mountain: #  and not self.land_has_been_played
+        if mountain and not self.land_has_been_played:
             self.hand.remove(mountain)
             self.battlefield.append(mountain)
             self.land_has_been_played = True
@@ -70,11 +69,9 @@ class Player:
 
         self.battlefield.remove(hulking_goblin)
         # Append to graveyard
-    
-    # Takes every creature on the side of the current player and attacks with them
+
     # Add functionality for the player to decide how many creatures to attack with
     def attack_with_all(self):
-        # Taps every creature
         for card in self.battlefield:
             if card.name == "Hulking Goblin" and not card.summoning_sick:
                 card.tap_object()

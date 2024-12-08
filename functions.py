@@ -6,7 +6,7 @@ from sprites import CardSprite
 def setup_game():
     # Creates 2 players
     player1 = Player("Player 1")
-    player2 = Player("Player 2")
+    player2 = Player("AI Bot")
 
     # Shuffles the players libraries
     player1.shuffle_library()
