@@ -76,7 +76,7 @@ class Player:
     def attack_with_all(self):
         # Taps every creature
         for card in self.battlefield:
-            if card.name == "Hulking Goblin":
+            if card.name == "Hulking Goblin" and not card.summoning_sick:
                 card.tap_object()
         
         return True

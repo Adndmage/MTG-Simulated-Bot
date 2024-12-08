@@ -6,6 +6,14 @@ class Gameobject:
         self.mana_value = mana_value
         self.is_in_hand = True
         self.is_tapped = False
+        
+        self.power = power
+        self.toughness = toughness
+        self.is_attacking = None # Polymorfism could be used
+        self.summoning_sick = None
+        if self.card_type == "Creature": 
+            self.summoning_sick = True
+            self.is_attacking = False
     
     def __str__(self):
         return f'{self.name}'

@@ -14,6 +14,13 @@ class Game:
         self.priority = self.turn
         self.players[0].land_has_been_played = False
         self.players[1].land_has_been_played = False
+        self.players[self.turn].draw_card()
+
+        # Untaps everything and removes summoning sickness
+        for card in self.players[self.turn].battlefield:
+            card.is_tapped = False
+
+            if card.card_type == "Creature": card.summoning_sick = False
 
     def change_phase(self):
         phases = ["Draw", "Main 1", "Attackers", "Damage", "Main 2", "End"]
@@ -23,11 +30,9 @@ class Game:
 
         if self.phase == "Draw": # If the new phase is "Draw" then it must be a new turn
             self.pass_turn()
-            self.players[self.turn].draw_card()
-
-            # Untaps everything
-            for card in self.players[self.turn].battlefield:
-                card.is_tapped = False
+        
+        if self.phase == "Main 2": # If the previous phase was "Damage"
+            self.combat_damage()
     
     def pass_priority(self, player):
         player.priority_passed = True # Logs that this player has passed priority
@@ -42,11 +47,19 @@ class Game:
         return True
     
     def check_gameover(self):
+        opponent = self.players[(self.turn + 1) % 2]
         for player in self.players:
             if player.life_total <= 0:
                 print(f'{player.name} has lost the game!')
                 return True
         return False
+
+    def combat_damage(self):
+        opponent = self.players[(self.turn + 1) % 2]
+        for creature in self.players[self.turn].battlefield:
+            if creature.is_tapped and creature.power:
+                opponent.life_total -= creature.power
+        self.check_gameover()
 
     def perform_gameaction(self, actionInputInteger):
         player = self.players[self.priority]
@@ -87,10 +100,10 @@ class Game:
     
     # Plays a lightning bolt and destroys a creature
     def play_lightning_bolt_destroy(self, player):
-        opponent = None
-        for other_player in self.players:
-            if other_player != player:
-                opponent = other_player
+        opponent = self.players[(self.priority + 1) % 2]
+        # for other_player in self.players:
+        #     if other_player != player:
+        #         opponent = other_player
         
         hulking_goblin = next((card for card in opponent.battlefield if card.name == "Hulking Goblin"), None)
 
@@ -108,11 +121,10 @@ class Game:
     # Plays a lightning bolt dealing damage to the opponent
     def play_lightning_bolt_damage(self, player):
         has_bolt_been_played = player.play_lightning_bolt()
-
+        opponent = self.players[(self.priority + 1) % 2]
+        
         if has_bolt_been_played:
-            for other_player in self.players:
-                if other_player != player:
-                    other_player.life_total -= 3
-                    self.check_gameover()
-                    return True
+            opponent.life_total -= 3
+            self.check_gameover()
+            return True
         return False
