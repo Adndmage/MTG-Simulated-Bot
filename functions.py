@@ -1,6 +1,6 @@
-import pygame as pg
 from Game import *
 from Player import *
+from sprites import CardSprite
 
 # Function for setting the game up
 def setup_game():
@@ -23,42 +23,36 @@ def setup_game():
 def update_board(game, cards):
     card_counter = 0
     for card in game.players[0].hand:
-        card.sprite = CardSprite(284 + 115 * card_counter, 822, 0.15, card.name)
-        cards.add(card.sprite)
+        cards.add(CardSprite(284 + 115 * card_counter, 822, 0.15, card.name))
         card_counter += 1
     
     card_counter = 0
     for card in game.players[1].hand:
-        card.sprite = CardSprite(284 + 115 * card_counter, 79, 0.15, card.name)
-        cards.add(card.sprite)
+        cards.add(CardSprite(284 + 115 * card_counter, 79, 0.15, card.name))
         card_counter += 1
     
     card_counter = 0
     for card in game.players[0].battlefield:
         if card.name == "Mountain":
-            card.sprite = CardSprite(290 + 140 * card_counter, 674, 0.12, card.name)
-            cards.add(card.sprite)
+            cards.add(CardSprite(290 + 140 * card_counter, 674, 0.12, card.name, card.is_tapped))
             card_counter += 1
     
     card_counter = 0
     for card in game.players[1].battlefield:
         if card.name == "Mountain":
-            card.sprite = CardSprite(290 + 140 * card_counter, 227, 0.12, card.name)
-            cards.add(card.sprite)
+            cards.add(CardSprite(290 + 140 * card_counter, 227, 0.12, card.name, card.is_tapped))
             card_counter += 1
     
     card_counter = 0
     for card in game.players[0].battlefield:
         if card.name == "Hulking Goblin":
-            card.sprite = CardSprite(290 + 170 * card_counter, 532, 0.15, card.name)
-            cards.add(card.sprite)
+            cards.add(CardSprite(290 + 170 * card_counter, 532, 0.15, card.name, card.is_tapped))
             card_counter += 1
     
     card_counter = 0
     for card in game.players[1].battlefield:
         if card.name == "Hulking Goblin":
-            card.sprite = CardSprite(290 + 170 * card_counter, 369, 0.15, card.name)
-            cards.add(card.sprite)
+            cards.add(CardSprite(290 + 170 * card_counter, 369, 0.15, card.name, card.is_tapped))
             card_counter += 1
         
         

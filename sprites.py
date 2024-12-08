@@ -1,14 +1,20 @@
 import pygame as pg
-from Gameobject import *
 
 # Sprite class for all card fronts
 class CardSprite(pg.sprite.Sprite):
-    def __init__(self, x, y, zoom, name):
+    def __init__(self, x, y, zoom, name, is_tapped=False):
         super().__init__()
         self.name = name
+        self.is_tapped = is_tapped
         self.image = pg.image.load(f'images/cards/{self.name}.png')
-        self.image = pg.transform.rotozoom(self.image, 0, zoom)
+
+        if self.is_tapped:
+            self.image = pg.transform.rotozoom(self.image, -90, zoom)
+        else:
+            self.image = pg.transform.rotozoom(self.image, 0, zoom)
+
         self.rect = self.image.get_rect(midleft = (x, y))
+        
 
 # Sprite for the mtg card back
 class LibrarySprite(pg.sprite.Sprite):

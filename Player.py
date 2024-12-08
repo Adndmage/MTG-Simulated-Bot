@@ -1,4 +1,3 @@
-import pygame as pg
 from Gameobject import *
 from random import shuffle
 
@@ -7,10 +6,11 @@ class Player:
         self.name = name
         self.life_total = 20
         self.library = (
-            [Gameobject('Mountain', 'Land', 0)] * 16 + 
-            [Gameobject('Hulking Goblin', 'Creature', 2, power=2, toughness=2)] * 12 +
-            [Gameobject('Lightning Bolt', 'Instant', 1)] * 12
+            [Gameobject('Mountain', 'Land', 0) for _ in range(16)] +
+            [Gameobject('Hulking Goblin', 'Creature', 2, power=2, toughness=2) for _ in range(12)] +
+            [Gameobject('Lightning Bolt', 'Instant', 1) for _ in range(12)]
         )
+
         self.hand = []
         self.battlefield = []
         self.priority_passed = False # Checks if player has passed priority in the current phase
@@ -24,17 +24,23 @@ class Player:
             self.hand.append(self.library.pop())
     
     def mana_check(self, mana_value):
-        mountains = [land for land in self.battlefield if land.name == "Mountain"]
+        mountains = [land for land in self.battlefield if land.name == "Mountain" and land.is_tapped == False]
 
         if mana_value <= len(mountains):
+            self.mana_pay(mountains, mana_value)
+
             return True
         return False
     
+    def mana_pay(self, land_list, mana_value):
+        for land in land_list[:mana_value]:
+            land.tap_object()
+
     def play_mountain(self):
         # Generator expression and next() is used to find the first mountain in hand
         mountain = next((card for card in self.hand if card.name == "Mountain"), None)
         
-        if mountain and not self.land_has_been_played:
+        if mountain: #  and not self.land_has_been_played
             self.hand.remove(mountain)
             self.battlefield.append(mountain)
             self.land_has_been_played = True
@@ -60,7 +66,7 @@ class Player:
     
     def remove_creature(self):
         # Since all creatures are the same there is no need to differentiate
-        hulking_goblin = next((card for card in self.hand if card.name == "Hulking Goblin"), None)
+        hulking_goblin = next((card for card in self.battlefield if card.name == "Hulking Goblin"), None)
 
         self.battlefield.remove(hulking_goblin)
         # Append to graveyard

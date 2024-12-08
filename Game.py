@@ -1,4 +1,3 @@
-import pygame as pg
 from Gameobject import *
 from Player import *
 from random import randint
@@ -17,7 +16,7 @@ class Game:
         self.players[1].land_has_been_played = False
 
     def change_phase(self):
-        phases = ["Draw", "Main 1", "Attackers", "Damage", "Main 2"]
+        phases = ["Draw", "Main 1", "Attackers", "Damage", "Main 2", "End"]
 
         current_phase_index = phases.index(self.phase)
         self.phase = phases[(current_phase_index + 1) % len(phases)] # Adds 1 to the index or resets it if it has reached the end
@@ -25,6 +24,10 @@ class Game:
         if self.phase == "Draw": # If the new phase is "Draw" then it must be a new turn
             self.pass_turn()
             self.players[self.turn].draw_card()
+
+            # Untaps everything
+            for card in self.players[self.turn].battlefield:
+                card.is_tapped = False
     
     def pass_priority(self, player):
         player.priority_passed = True # Logs that this player has passed priority
@@ -54,13 +57,13 @@ class Game:
             can_action_be_performed = self.pass_priority(player)
 
         elif actionInputInteger == 2:
-            if player == self.players[self.turn] and self.phase == "Main 1" or self.phase == "Main 2":
+            if player == self.players[self.turn] and (self.phase == "Main 1" or self.phase == "Main 2"):
                 can_action_be_performed = player.play_mountain()
             else:
                 can_action_be_performed = False
 
         elif actionInputInteger == 3:
-            if player == self.players[self.turn] and self.phase == "Main 1" or self.phase == "Main 2":
+            if player == self.players[self.turn] and (self.phase == "Main 1" or self.phase == "Main 2"):
                 can_action_be_performed = player.play_hulking_goblin()
             else:
                 can_action_be_performed = False
@@ -71,7 +74,7 @@ class Game:
         elif actionInputInteger == 5:
             can_action_be_performed = self.play_lightning_bolt_damage(player)
 
-        elif actionInputInteger == 6:
+        elif actionInputInteger == 6 and self.phase == "Attackers":
             can_action_be_performed = player.attack_with_all()
         
         # elif actionInputInteger == 6: # Implementation of blocking
@@ -111,5 +114,5 @@ class Game:
                 if other_player != player:
                     other_player.life_total -= 3
                     self.check_gameover()
-        else:
-            return False
+                    return True
+        return False
