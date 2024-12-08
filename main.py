@@ -74,18 +74,7 @@ while running:
 
     # Updates cards in hand and on field
     cards.empty()
-    
-    card_counter = 0
-    for card in game.players[0].hand:
-        card.sprite = CardSprite(284 + 115 * card_counter, 900, card.name)
-        cards.add(card.sprite)
-        card_counter += 1
-    
-    card_counter = 0
-    for card in game.players[1].hand:
-        card.sprite = CardSprite(284 + 115 * card_counter, 158, card.name)
-        cards.add(card.sprite)
-        card_counter += 1
+    update_board(game, cards)
 
     cards.draw(screen)
     library.draw(screen)

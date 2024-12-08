@@ -3,12 +3,12 @@ from Gameobject import *
 
 # Sprite class for all card fronts
 class CardSprite(pg.sprite.Sprite):
-    def __init__(self, x, y, name):
+    def __init__(self, x, y, zoom, name):
         super().__init__()
         self.name = name
         self.image = pg.image.load(f'images/cards/{self.name}.png')
-        self.image = pg.transform.rotozoom(self.image, 0, 0.15)
-        self.rect = self.image.get_rect(bottomleft = (x, y))
+        self.image = pg.transform.rotozoom(self.image, 0, zoom)
+        self.rect = self.image.get_rect(midleft = (x, y))
 
 # Sprite for the mtg card back
 class LibrarySprite(pg.sprite.Sprite):
