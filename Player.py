@@ -10,72 +10,65 @@ class Player:
             [Gameobject('Mountain', 'Land', 0)] * 16 + 
             [Gameobject('Hulking Goblin', 'Creature', 2, power=2, toughness=2)] * 12 +
             [Gameobject('Lightning Bolt', 'Instant', 1)] * 12
-        ) # Makes deck consisting of 16 lands, 12 creatures and 12 bolts
-        self.hand = [] # Player's hand
-        self.battlefield = [] # Cards on the battlefield
+        )
+        self.hand = []
+        self.battlefield = []
         self.priority_passed = False # Checks if player has passed priority in the current phase
+        self.land_has_been_played = False
 
-    # Shuffles cards in library
     def shuffle_library(self):
         shuffle(self.library)
 
-    # Takes the top of the library and puts it into the player's hand
     def draw_card(self):
         if self.library:
             self.hand.append(self.library.pop())
     
-    # Takes a mountain from hand and puts it onto the battlefield
+    def mana_check(self, mana_value):
+        mountains = [land for land in self.battlefield if land.name == "Mountain"]
+
+        if mana_value <= len(mountains):
+            return True
+        return False
+    
     def play_mountain(self):
-        # if land has not been played this turn and it is currently the players turn also check if the player has a mountain in hand
         # Generator expression and next() is used to find the first mountain in hand
         mountain = next((card for card in self.hand if card.name == "Mountain"), None)
         
-        # Checks to see if a mountain has been found in hand and if a land has been played this turn
-        if mountain: # and variable to check if land has been played this turn
+        if mountain and not self.land_has_been_played:
             self.hand.remove(mountain)
             self.battlefield.append(mountain)
+            self.land_has_been_played = True
             return True
-        else:
-            return False
-    
-    # Takes a creature from hand and puts it onto the battlefield
+        return False
+
     def play_hulking_goblin(self):
         hulking_goblin = next((card for card in self.hand if card.name == "Hulking Goblin"), None)
 
-        if hulking_goblin: # and mana check
+        if hulking_goblin and self.mana_check(2):
             self.hand.remove(hulking_goblin)
             self.battlefield.append(hulking_goblin)
             return True
-        else:
-            return False
-    
-    # Takes a bolt from hand and puts it onto the battlefield
+        return False
+
     def play_lightning_bolt(self):
         lightning_bolt = next((card for card in self.hand if card.name == "Lightning Bolt"), None)
 
-        if lightning_bolt: # and mana check
+        if lightning_bolt and self.mana_check(1):
             self.hand.remove(lightning_bolt)
             return True
-        else:
-            print("Action cannot be performed")
-            return False
+        return False
     
-    # Removes a creature from the battlefield
-    # Since all creatures are the same there is no need to differentiate
     def remove_creature(self):
+        # Since all creatures are the same there is no need to differentiate
         hulking_goblin = next((card for card in self.hand if card.name == "Hulking Goblin"), None)
 
-        if hulking_goblin:
-            self.battlefield.remove(hulking_goblin)
-            return True
-        else:
-            return False
+        self.battlefield.remove(hulking_goblin)
         # Append to graveyard
     
     # Takes every creature on the side of the current player and attacks with them
     # Add functionality for the player to decide how many creatures to attack with
     def attack_with_all(self):
-        # Takes every creature and taps it
+        # Taps every creature
         for card in self.battlefield:
             if card.name == "Hulking Goblin":
                 card.tap_object()

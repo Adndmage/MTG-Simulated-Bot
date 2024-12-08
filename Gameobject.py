@@ -20,13 +20,13 @@ class Gameobject:
     def tap_object(self):
         if not self.is_tapped and self.sprite:
             self.is_tapped = True
-            self.image = pg.transform.rotozoom(self.image, -90, 1)
+            self.sprite.image = pg.transform.rotozoom(self.image, -90, 1)
     
     # Untaps the object if it is tapped
     def untap_object(self):
         if self.is_tapped and self.sprite:
             self.is_tapped = False
-            self.image = pg.transform.rotozoom(self.image, 90, 1)
+            self.sprite.image = pg.transform.rotozoom(self.image, 90, 1)
 
     # Potential functionality for tying game actions to specific cards    
     # def add_action(self, action):
