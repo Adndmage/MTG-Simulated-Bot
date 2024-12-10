@@ -41,4 +41,3 @@ class FontSprite(pg.sprite.Sprite):
             self.rect = self.image.get_rect(midbottom = (x, y))
         elif placement == "midtop":
             self.rect = self.image.get_rect(midtop = (x, y))
-        

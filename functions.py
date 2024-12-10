@@ -54,5 +54,3 @@ def update_board(game, cards):
         if card.name == "Hulking Goblin":
             cards.add(CardSprite(290 + 170 * card_counter, 369, 0.15, card.name, card.is_tapped))
             card_counter += 1
-        
-        

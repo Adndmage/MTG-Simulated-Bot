@@ -8,6 +8,7 @@ class Game:
         self.turn = randint(0, 1) # Assigns the starting player by randomly picking an integer, which can later be used with self.players to determine which player's turn it is
         self.priority = self.turn
         self.phase = "Draw"
+        self.is_running = True
     
     def pass_turn(self):
         self.turn = (self.turn + 1) % 2 # 0 becomes 1 and 1 becomes 0
@@ -51,8 +52,9 @@ class Game:
         for player in self.players:
             if player.life_total <= 0:
                 print(f'{player.name} has lost the game!')
-                return True
-        return False
+                self.is_running = False
+                # return True
+        # return False
 
     def combat_damage(self):
         opponent = self.players[(self.turn + 1) % 2]
