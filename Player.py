@@ -26,13 +26,13 @@ class Player:
         mountains = [land for land in self.battlefield if land.name == "Mountain" and land.is_tapped == False]
 
         if mana_value <= len(mountains):
-            self.mana_pay(mountains, mana_value) # Put this in the play methods instead
-
             return True
         return False
     
-    def mana_pay(self, land_list, mana_value):
-        for land in land_list[:mana_value]:
+    def mana_pay(self, mana_value):
+        mountains = [land for land in self.battlefield if land.name == "Mountain" and land.is_tapped == False]
+
+        for land in mountains[:mana_value]:
             land.tap_object()
 
     def play_mountain(self):
@@ -47,18 +47,22 @@ class Player:
         return False
 
     def play_hulking_goblin(self):
+        mana_value = 2
         hulking_goblin = next((card for card in self.hand if card.name == "Hulking Goblin"), None)
 
-        if hulking_goblin and self.mana_check(2):
+        if hulking_goblin and self.mana_check(mana_value):
+            self.mana_pay(mana_value)
             self.hand.remove(hulking_goblin)
             self.battlefield.append(hulking_goblin)
             return True
         return False
 
     def play_lightning_bolt(self):
+        mana_value = 1
         lightning_bolt = next((card for card in self.hand if card.name == "Lightning Bolt"), None)
 
-        if lightning_bolt and self.mana_check(1):
+        if lightning_bolt and self.mana_check(mana_value):
+            self.mana_pay(mana_value)
             self.hand.remove(lightning_bolt)
             return True
         return False
@@ -68,7 +72,6 @@ class Player:
         hulking_goblin = next((card for card in self.battlefield if card.name == "Hulking Goblin"), None)
 
         self.battlefield.remove(hulking_goblin)
-        # Append to graveyard
 
     # Add functionality for the player to decide how many creatures to attack with
     def attack_with_all(self):

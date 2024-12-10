@@ -50,22 +50,22 @@ while running:
             running = False
         
         # Registers which action is trying to be performed
-        if game.priority == 0:
-            if event.type == pg.KEYDOWN and event.key == pg.K_1:
-                game.perform_gameaction(1)
-            if event.type == pg.KEYDOWN and event.key == pg.K_2:
-                game.perform_gameaction(2)
-            if event.type == pg.KEYDOWN and event.key == pg.K_3:
-                game.perform_gameaction(3)
-            if event.type == pg.KEYDOWN and event.key == pg.K_4:
-                game.perform_gameaction(4)
-            if event.type == pg.KEYDOWN and event.key == pg.K_5:
-                game.perform_gameaction(5)
-            if event.type == pg.KEYDOWN and event.key == pg.K_6:
-                game.perform_gameaction(6)
+        # if game.priority == 0:
+        if event.type == pg.KEYDOWN and event.key == pg.K_1:
+            game.perform_gameaction(1)
+        if event.type == pg.KEYDOWN and event.key == pg.K_2:
+            game.perform_gameaction(2)
+        if event.type == pg.KEYDOWN and event.key == pg.K_3:
+            game.perform_gameaction(3)
+        if event.type == pg.KEYDOWN and event.key == pg.K_4:
+            game.perform_gameaction(4)
+        if event.type == pg.KEYDOWN and event.key == pg.K_5:
+            game.perform_gameaction(5)
+        if event.type == pg.KEYDOWN and event.key == pg.K_6:
+            game.perform_gameaction(6)
     
-    if game.priority == 1:
-        ai(game)
+    # if game.priority == 1:
+    #     ai(game)
 
     screen.fill('#E5E4E2') # Makes the screen gray
 
