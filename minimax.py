@@ -1,5 +1,20 @@
 from Game import *
 
+def computer_ai(game):
+    best_evaluation = -10000
+    best_action = None
+
+    for action_integer in range(1, 7):
+        game.perform_gameaction(action_integer)
+        evaluation = minimax(game, 3, False)
+        
+        if evaluation > best_evaluation:
+            best_evaluation = evaluation
+            best_action = action_integer
+    
+    return best_action
+
+
 def minimax(game, depth, is_maximizing_player):
     if depth == 0 or not game.is_running:
         return evaluate(game)

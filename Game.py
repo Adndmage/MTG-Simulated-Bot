@@ -62,6 +62,23 @@ class Game:
             if creature.is_tapped and creature.power:
                 opponent.life_total -= creature.power
         self.check_gameover()
+    
+    def check_possible_actions(self, player_integer) -> list:
+        action_list = [1]
+
+        if not self.players[player_integer].land_has_been_played and self.turn == player_integer and (self.phase == "Main" or self.phase == "Main 2"):
+            action_list.append(2)
+
+        if self.players[player_integer].mana_check(1):
+            action_list.extend(4, 5)
+
+            if self.players[player_integer].mana_check(2) and self.turn == player_integer and (self.phase == "Main" or self.phase == "Main 2"):
+                action_list.append(3)
+        
+        if self.turn == player_integer and self.phase == "Attackers":
+            action_list.append(6)
+        
+        return action_list
 
     def perform_gameaction(self, actionInputInteger):
         player = self.players[self.priority]
