@@ -9,6 +9,7 @@ class Game:
         self.priority = self.turn
         self.phase = "Draw"
         self.is_running = True
+        self.is_temporary = False
     
     def pass_turn(self):
         self.turn = (self.turn + 1) % 2 # 0 becomes 1 and 1 becomes 0
@@ -50,7 +51,7 @@ class Game:
     def check_gameover(self):
         opponent = self.players[(self.turn + 1) % 2]
         for player in self.players:
-            if player.life_total <= 0:
+            if player.life_total <= 0 and not self.is_temporary:
                 print(f'{player.name} has lost the game!')
                 self.is_running = False
                 # return True
@@ -66,55 +67,61 @@ class Game:
     def check_possible_actions(self, player_integer) -> list:
         action_list = [1]
 
-        if not self.players[player_integer].land_has_been_played and self.turn == player_integer and (self.phase == "Main" or self.phase == "Main 2"):
+        # Checks hand and battlefield for the specific cards
+        mountain = next((card for card in self.players[player_integer].hand if card.name == "Mountain"), None)
+        lightning_bolt = next((card for card in self.players[player_integer].hand if card.name == "Lightning Bolt"), None)
+        hulking_goblin = next((card for card in self.players[player_integer].hand if card.name == "Hulking Goblin"), None)
+        
+        if mountain and not self.players[player_integer].land_has_been_played and self.turn == player_integer and (self.phase == "Main 1" or self.phase == "Main 2"):
             action_list.append(2)
 
-        if self.players[player_integer].mana_check(1):
-            action_list.extend(4, 5)
+        if lightning_bolt and self.players[player_integer].mana_check(1):
+            action_list.extend([4, 5])
 
-            if self.players[player_integer].mana_check(2) and self.turn == player_integer and (self.phase == "Main" or self.phase == "Main 2"):
+        if hulking_goblin and self.players[player_integer].mana_check(2) and self.turn == player_integer and (self.phase == "Main 1" or self.phase == "Main 2"):
                 action_list.append(3)
         
         if self.turn == player_integer and self.phase == "Attackers":
             action_list.append(6)
-        
+
         return action_list
 
-    def perform_gameaction(self, actionInputInteger):
+    def perform_gameaction(self, action_integer):
         player = self.players[self.priority]
 
         can_action_be_performed = None
 
-        if actionInputInteger == 1:
+        if action_integer == 1:
             can_action_be_performed = self.pass_priority(player)
 
-        elif actionInputInteger == 2:
+        elif action_integer == 2:
             if player == self.players[self.turn] and (self.phase == "Main 1" or self.phase == "Main 2"):
                 can_action_be_performed = player.play_mountain()
             else:
                 can_action_be_performed = False
 
-        elif actionInputInteger == 3:
+        elif action_integer == 3:
             if player == self.players[self.turn] and (self.phase == "Main 1" or self.phase == "Main 2"):
                 can_action_be_performed = player.play_hulking_goblin()
             else:
                 can_action_be_performed = False
 
-        elif actionInputInteger == 4:
+        elif action_integer == 4:
             can_action_be_performed = self.play_lightning_bolt_destroy(player)
 
-        elif actionInputInteger == 5:
+        elif action_integer == 5:
             can_action_be_performed = self.play_lightning_bolt_damage(player)
 
-        elif actionInputInteger == 6 and self.phase == "Attackers":
+        elif action_integer == 6 and self.phase == "Attackers":
             can_action_be_performed = player.attack_with_all()
+            self.pass_priority(player)
         
         # elif actionInputInteger == 6: # Implementation of blocking
         #     self.block_with_all_possible(player)
 
-        if can_action_be_performed:
+        if can_action_be_performed and not self.is_temporary:
             print("Action has been performed")
-        else:
+        elif not self.is_temporary:
             print("Action cannot be performed")
     
     # Plays a lightning bolt and destroys a creature
