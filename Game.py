@@ -5,11 +5,14 @@ from random import randint
 class Game:
     def __init__(self, player_1, player_2):
         self.players = [player_1, player_2]
-        self.turn = randint(1, 1) # Randomly assigns starting player
+        self.turn = randint(0, 1) # Randomly assigns starting player
         self.priority = self.turn
         self.phase = "Draw"
         self.is_running = True
         self.is_temporary = False
+    
+    def __str__(self):
+        return f"It is currently {self.players[self.turn]}'s turn in the {self.phase} phase"
     
     def pass_turn(self):
         self.turn = (self.turn + 1) % 2 # 0 becomes 1, 1 becomes 0
@@ -50,7 +53,7 @@ class Game:
     def check_gameover(self):
         for player in self.players:
             if player.life_total <= 0 and not self.is_temporary:
-                print(f'{player.name} has lost the game!')
+                print(f"{player.name} has lost the game!")
                 self.is_running = False
 
     def combat_damage(self):

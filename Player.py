@@ -6,14 +6,17 @@ class Player:
         self.name = name
         self.life_total = 20
         self.library = (
-            [Gameobject('Mountain', 'Land', 0) for _ in range(16)] +
-            [Gameobject('Hulking Goblin', 'Creature', 2, power=2, toughness=2) for _ in range(12)] +
-            [Gameobject('Lightning Bolt', 'Instant', 1) for _ in range(12)]
+            [Gameobject("Mountain", "Land", 0) for _ in range(16)] +
+            [Gameobject("Hulking Goblin", "Creature", 2, power=2, toughness=2) for _ in range(12)] +
+            [Gameobject("Lightning Bolt", "Instant", 1) for _ in range(12)]
         )
         self.hand = []
         self.battlefield = []
         self.priority_passed = False # Checks if player has passed priority in the current phase
         self.land_has_been_played = False
+    
+    def __str__(self):
+        return f"{self.name} is at {self.life_total} life"
 
     def shuffle_library(self):
         shuffle(self.library)

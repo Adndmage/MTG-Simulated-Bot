@@ -6,7 +6,7 @@ class CardSprite(pg.sprite.Sprite):
         super().__init__()
         self.name = name
         self.is_tapped = is_tapped
-        self.image = pg.image.load(f'images/cards/{self.name}.png')
+        self.image = pg.image.load(f"images/cards/{self.name}.png")
 
         if self.is_tapped:
             self.image = pg.transform.rotozoom(self.image, -90, zoom)
@@ -20,12 +20,12 @@ class LibrarySprite(pg.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
 
-        self.image = pg.image.load(f'images/cards/cardback.jpeg')
+        self.image = pg.image.load(f"images/cards/cardback.jpeg")
         self.image = pg.transform.rotozoom(self.image, 0, 0.2)
         self.rect = self.image.get_rect(center = (x, y))
 
 class FontSprite(pg.sprite.Sprite):
-    def __init__(self, x, y, text, font_name, font_size, placement = "center", color = '#000000'):
+    def __init__(self, x, y, text, font_name, font_size, placement = "center", color = "#000000"):
         super().__init__()
         
         font = pg.font.SysFont(font_name, font_size)

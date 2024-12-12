@@ -3,10 +3,8 @@ class Gameobject:
         self.name = name
         self.card_type = card_type
         self.mana_value = mana_value
-        self.is_in_hand = True
         self.is_tapped = False
         
-        # Polymorfism could be used for specific types of cards
         # Only relevant for creatures
         self.power = power
         self.toughness = toughness
@@ -17,7 +15,7 @@ class Gameobject:
             self.is_attacking = False
     
     def __str__(self):
-        return f'{self.name}'
+        return f"{self.name} is of the card type {self.card_type} and has a mana value of {self.mana_value}"
 
     def tap_object(self):
         if not self.is_tapped:
