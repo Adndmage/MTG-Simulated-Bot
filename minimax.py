@@ -4,10 +4,10 @@ from copy import deepcopy
 def computer_ai(game):
     best_evaluation = -10000
     best_action = None
-    # list_of_actions = game.check_possible_actions(1)
+    # list_of_actions = game.get_possible_actions(1)
     # print(list_of_actions)
 
-    for action_integer in game.check_possible_actions(1):
+    for action_integer in game.get_possible_actions(1):
         game_copy = deepcopy(game)
         game_copy.perform_gameaction(action_integer)
         evaluation = minimax(game_copy, 8, False)
@@ -28,7 +28,7 @@ def minimax(game, depth, is_maximizing_player):
     if is_maximizing_player:
         max_evaluation = -10000
 
-        for action_integer in game.check_possible_actions(current_player):
+        for action_integer in game.get_possible_actions(current_player):
             game_copy = deepcopy(game)
             game_copy.perform_gameaction(action_integer)
             evaluation = minimax(game, depth - 1, False)
@@ -37,7 +37,7 @@ def minimax(game, depth, is_maximizing_player):
     else:
         min_evaluation = 10000
 
-        for action_integer in game.check_possible_actions(current_player):
+        for action_integer in game.get_possible_actions(current_player):
             game_copy = deepcopy(game)
             game_copy.perform_gameaction(action_integer)
             evaluation = minimax(game, depth - 1, True)

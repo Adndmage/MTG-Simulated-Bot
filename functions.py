@@ -2,23 +2,19 @@ from Game import *
 from Player import *
 from sprites import CardSprite
 
-# Function for setting the game up
 def setup_game():
-    # Creates 2 players
-    player1 = Player("Player 1")
-    player2 = Player("AI Bot")
+    player_1 = Player("Player 1")
+    player_2 = Player("AI Bot")
 
-    # Shuffles the players libraries
-    player1.shuffle_library()
-    player2.shuffle_library()
+    player_1.shuffle_library()
+    player_2.shuffle_library()
 
     # Draws starting hands
     for _ in range(7):
-        player1.draw_card()
-        player2.draw_card()
+        player_1.draw_card()
+        player_2.draw_card()
     
-    # Returns game class with the players to be stored in a variable
-    return Game(player1, player2)
+    return Game(player_1, player_2)
 
 def update_board(game, cards):
     card_counter = 0

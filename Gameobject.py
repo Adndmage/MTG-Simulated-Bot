@@ -1,5 +1,4 @@
 class Gameobject:
-    # Default values for power and toughness are used if the card isn't a creature
     def __init__(self, name, card_type, mana_value, power=None, toughness=None):
         self.name = name
         self.card_type = card_type
@@ -7,9 +6,11 @@ class Gameobject:
         self.is_in_hand = True
         self.is_tapped = False
         
+        # Polymorfism could be used for specific types of cards
+        # Only relevant for creatures
         self.power = power
         self.toughness = toughness
-        self.is_attacking = None # Polymorfism could be used
+        self.is_attacking = None 
         self.summoning_sick = None
         if self.card_type == "Creature": 
             self.summoning_sick = True
@@ -17,13 +18,11 @@ class Gameobject:
     
     def __str__(self):
         return f'{self.name}'
-    
-    # Taps the object if it isn't tapped
+
     def tap_object(self):
         if not self.is_tapped:
             self.is_tapped = True
     
-    # Untaps the object if it is tapped
     def untap_object(self):
         if self.is_tapped:
             self.is_tapped = False

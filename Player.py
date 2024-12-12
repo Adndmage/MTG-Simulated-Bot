@@ -7,8 +7,8 @@ class Player:
         self.life_total = 20
         self.library = (
             [Gameobject('Mountain', 'Land', 0) for _ in range(16)] +
-            [Gameobject('Hulking Goblin', 'Creature', 2, power=2, toughness=2) for _ in range(12)] +
-            [Gameobject('Lightning Bolt', 'Instant', 1) for _ in range(12)]
+            [Gameobject('Hulking Goblin', 'Creature', 2, power=2, toughness=2) for _ in range(16)] +
+            [Gameobject('Lightning Bolt', 'Instant', 1) for _ in range(8)]
         )
         self.hand = []
         self.battlefield = []
@@ -38,45 +38,32 @@ class Player:
     def play_mountain(self):
         # Generator expression and next() is used to find the first mountain in hand
         mountain = next((card for card in self.hand if card.name == "Mountain"), None)
-        
-        if mountain and not self.land_has_been_played:
-            self.hand.remove(mountain)
-            self.battlefield.append(mountain)
-            self.land_has_been_played = True
-            return True
-        return False
+
+        self.hand.remove(mountain)
+        self.battlefield.append(mountain)
+        self.land_has_been_played = True
 
     def play_hulking_goblin(self):
         mana_value = 2
         hulking_goblin = next((card for card in self.hand if card.name == "Hulking Goblin"), None)
 
-        if hulking_goblin and self.mana_check(mana_value):
-            self.mana_pay(mana_value)
-            self.hand.remove(hulking_goblin)
-            self.battlefield.append(hulking_goblin)
-            return True
-        return False
+        self.mana_pay(mana_value)
+        self.hand.remove(hulking_goblin)
+        self.battlefield.append(hulking_goblin)
 
     def play_lightning_bolt(self):
         mana_value = 1
         lightning_bolt = next((card for card in self.hand if card.name == "Lightning Bolt"), None)
 
-        if lightning_bolt and self.mana_check(mana_value):
-            self.mana_pay(mana_value)
-            self.hand.remove(lightning_bolt)
-            return True
-        return False
+        self.mana_pay(mana_value)
+        self.hand.remove(lightning_bolt)
     
     def remove_creature(self):
-        # Since all creatures are the same there is no need to differentiate
         hulking_goblin = next((card for card in self.battlefield if card.name == "Hulking Goblin"), None)
 
         self.battlefield.remove(hulking_goblin)
 
-    # Add functionality for the player to decide how many creatures to attack with
     def attack_with_all(self):
         for card in self.battlefield:
             if card.name == "Hulking Goblin" and not card.summoning_sick:
                 card.tap_object()
-        
-        return True

@@ -1,6 +1,6 @@
 import pygame as pg
 
-# Sprite class for all card fronts
+# Sprite for all card fronts
 class CardSprite(pg.sprite.Sprite):
     def __init__(self, x, y, zoom, name, is_tapped=False):
         super().__init__()
@@ -14,9 +14,8 @@ class CardSprite(pg.sprite.Sprite):
             self.image = pg.transform.rotozoom(self.image, 0, zoom)
 
         self.rect = self.image.get_rect(midleft = (x, y))
-        
 
-# Sprite for the mtg card back
+# Sprite for mtg card back
 class LibrarySprite(pg.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
