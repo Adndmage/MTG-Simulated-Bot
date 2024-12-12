@@ -5,7 +5,7 @@ from random import randint
 class Game:
     def __init__(self, player_1, player_2):
         self.players = [player_1, player_2]
-        self.turn = randint(0, 1) # Randomly assigns starting player
+        self.turn = randint(1, 1) # Randomly assigns starting player
         self.priority = self.turn
         self.phase = "Draw"
         self.is_running = True
@@ -62,7 +62,7 @@ class Game:
         self.check_gameover()
     
     def get_possible_actions(self, player_integer) -> list:
-        action_list = [1]
+        action_list = []
 
         # Checks hand and battlefield for the specific cards
         mountain = next((card for card in self.players[player_integer].hand if card.name == "Mountain"), None)
@@ -70,22 +70,23 @@ class Game:
         hulking_goblin_hand = next((card for card in self.players[player_integer].hand if card.name == "Hulking Goblin"), None)
         hulking_goblin_battlefield = next((card for card in self.players[player_integer].battlefield if card.name == "Hulking Goblin" and not card.summoning_sick), None)
         hulking_goblin_battlefield_opponent = next((card for card in self.players[(player_integer + 1) % 2].battlefield if card.name == "Hulking Goblin"), None)
-
         
         if mountain and not self.players[player_integer].land_has_been_played and self.turn == player_integer and (self.phase == "Main 1" or self.phase == "Main 2"):
             action_list.append(2)
+        
+        if hulking_goblin_hand and self.players[player_integer].mana_check(2) and self.turn == player_integer and (self.phase == "Main 1" or self.phase == "Main 2"):
+            action_list.append(3)
 
         if lightning_bolt and self.players[player_integer].mana_check(1):
             action_list.append(4)
             
             if hulking_goblin_battlefield_opponent:
                 action_list.append(5)
-
-        if hulking_goblin_hand and self.players[player_integer].mana_check(2) and self.turn == player_integer and (self.phase == "Main 1" or self.phase == "Main 2"):
-                action_list.append(3)
         
         if hulking_goblin_battlefield and self.turn == player_integer and self.phase == "Attackers":
             action_list.append(6)
+
+        action_list.append(1)
 
         return action_list
 
@@ -93,33 +94,33 @@ class Game:
         player = self.players[self.priority]
         
         if action_integer not in self.get_possible_actions(self.priority):
-            print("Action cannot be performed")
+            if not self.is_temporary: print(f"Action cannot be performed by {player.name}")
             return
 
         if action_integer == 1:
             self.pass_priority(player)
-            print(f"{player.name} passed priority")
+            if not self.is_temporary: print(f"{player.name} passed priority")
 
         elif action_integer == 2:
             player.play_mountain()
-            print(f"{player.name} played Mountain")
+            if not self.is_temporary: print(f"{player.name} played Mountain")
 
         elif action_integer == 3:
             player.play_hulking_goblin()
-            print(f"{player.name} played Hulking Goblin")
+            if not self.is_temporary: print(f"{player.name} played Hulking Goblin")
 
         elif action_integer == 4:
             self.play_lightning_bolt_damage(player)
-            print(f"{player.name} played Lightning Bolt dealing damage")
+            if not self.is_temporary: print(f"{player.name} played Lightning Bolt dealing damage")
 
         elif action_integer == 5:
             self.play_lightning_bolt_destroy(player)
-            print(f"{player.name} played Lightning Bolt destroying a creature")
+            if not self.is_temporary: print(f"{player.name} played Lightning Bolt destroying a creature")
 
         elif action_integer == 6:
             player.attack_with_all()
             self.pass_priority(player)
-            print(f"{player.name} attacked with all")
+            if not self.is_temporary: print(f"{player.name} attacked with all")
     
     # Plays a lightning bolt dealing damage to the opponent
     def play_lightning_bolt_damage(self, player):

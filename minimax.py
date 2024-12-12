@@ -9,13 +9,15 @@ def computer_ai(game):
 
     for action_integer in game.get_possible_actions(1):
         game_copy = deepcopy(game)
+        game_copy.is_temporary = True
         game_copy.perform_gameaction(action_integer)
-        evaluation = minimax(game_copy, 8, False)
+        evaluation = minimax(game_copy, 7, False)
         
         if evaluation > best_evaluation:
             best_evaluation = evaluation
             best_action = action_integer
-    # print(f'Best action: {best_action}')
+    
+    # print(f'Best action: {best_action} in {game.phase}')
     # print(f'Best evaluation: {best_evaluation}')
     return best_action
 
@@ -28,22 +30,21 @@ def minimax(game, depth, is_maximizing_player):
     if is_maximizing_player:
         max_evaluation = -10000
 
-        for action_integer in game.get_possible_actions(current_player):
+        for action in game.get_possible_actions(current_player):
             game_copy = deepcopy(game)
-            game_copy.perform_gameaction(action_integer)
-            evaluation = minimax(game, depth - 1, False)
+            game_copy.perform_gameaction(action)
+            evaluation = minimax(game_copy, depth - 1, False)
             max_evaluation = max(max_evaluation, evaluation)
         return max_evaluation
     else:
         min_evaluation = 10000
 
-        for action_integer in game.get_possible_actions(current_player):
+        for action in game.get_possible_actions(current_player):
             game_copy = deepcopy(game)
-            game_copy.perform_gameaction(action_integer)
-            evaluation = minimax(game, depth - 1, True)
+            game_copy.perform_gameaction(action)
+            evaluation = minimax(game_copy, depth - 1, True)
             min_evaluation = min(min_evaluation, evaluation)
         return min_evaluation
-
 
 def evaluate(game):
     evaluation = game.players[1].life_total - game.players[0].life_total

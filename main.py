@@ -3,7 +3,6 @@ from Gameobject import *
 from sprites import *
 from functions import *
 from minimax import *
-from copy import deepcopy
 from RandomAI import *
 
 # Pygame standard setup
@@ -56,14 +55,12 @@ while running:
             if event.key == pg.K_5:
                 game.perform_gameaction(5)
             if event.key == pg.K_6:
-                game.perform_gameaction(26)
+                game.perform_gameaction(6)
     
     if game.priority == 1: # if computer's turn
-        # temporary_game = deepcopy(game)
-        # temporary_game.is_temporary = True
-        # computer_action = computer_ai(temporary_game)
-        # game.perform_gameaction(computer_action)
-        computer_random(game)
+        computer_action = computer_ai(game)
+        game.perform_gameaction(computer_action)
+        # computer_random(game)
 
     screen.fill('#E5E4E2') # Light gray background
 
