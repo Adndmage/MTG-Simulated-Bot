@@ -42,23 +42,28 @@ while running:
         if event.type == pg.QUIT:
             running = False
         
-        # Registers which action is trying to be performed
-        if game.priority == 0 and event.type == pg.KEYDOWN: # if player's turn
-            if event.key == pg.K_1:
-                game.perform_gameaction(1)
-            if event.key == pg.K_2:
-                game.perform_gameaction(2)
-            if event.key == pg.K_3:
-                game.perform_gameaction(3)
-            if event.key == pg.K_4:
-                game.perform_gameaction(4)
-            if event.key == pg.K_5:
-                game.perform_gameaction(5)
-            if event.key == pg.K_6:
-                game.perform_gameaction(6)
+        # # Registers which action is trying to be performed
+        # if game.priority == 0 and event.type == pg.KEYDOWN: # if player's turn
+        #     if event.key == pg.K_1:
+        #         game.perform_gameaction(1)
+        #     if event.key == pg.K_2:
+        #         game.perform_gameaction(2)
+        #     if event.key == pg.K_3:
+        #         game.perform_gameaction(3)
+        #     if event.key == pg.K_4:
+        #         game.perform_gameaction(4)
+        #     if event.key == pg.K_5:
+        #         game.perform_gameaction(5)
+        #     if event.key == pg.K_6:
+        #         game.perform_gameaction(6)
     
-    if game.priority == 1: # if computer's turn
-        computer_action = computer_ai(game)
+    if game.priority == 0 and game.is_running: # if computer 0's turn
+        computer_action = computer_ai(game, 0)
+        game.perform_gameaction(computer_action)
+        # computer_random(game)
+
+    if game.priority == 1 and game.is_running: # if computer 1's turn
+        computer_action = computer_ai(game, 1)
         game.perform_gameaction(computer_action)
         # computer_random(game)
 

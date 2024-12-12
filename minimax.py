@@ -1,25 +1,37 @@
 from Game import *
 from copy import deepcopy
 
-def computer_ai(game):
-    best_evaluation = -10000
-    best_action = None
-    # list_of_actions = game.get_possible_actions(1)
-    # print(list_of_actions)
+def computer_ai(game, player_integer):
+    if player_integer == 1:
+        best_evaluation = -10000
+        best_action = None
 
-    for action_integer in game.get_possible_actions(1):
-        game_copy = deepcopy(game)
-        game_copy.is_temporary = True
-        game_copy.perform_gameaction(action_integer)
-        evaluation = minimax(game_copy, 7, False)
-        
-        if evaluation > best_evaluation:
-            best_evaluation = evaluation
-            best_action = action_integer
-    
-    # print(f'Best action: {best_action} in {game.phase}')
-    # print(f'Best evaluation: {best_evaluation}')
-    return best_action
+        for action_integer in game.get_possible_actions(player_integer):
+            game_copy = deepcopy(game)
+            game_copy.is_temporary = True
+            game_copy.perform_gameaction(action_integer)
+            evaluation = minimax(game_copy, 10, False)
+            
+            if evaluation > best_evaluation:
+                best_evaluation = evaluation
+                best_action = action_integer
+
+        return best_action
+    else:
+        best_evaluation = 10000
+        best_action = None
+
+        for action_integer in game.get_possible_actions(player_integer):
+            game_copy = deepcopy(game)
+            game_copy.is_temporary = True
+            game_copy.perform_gameaction(action_integer)
+            evaluation = minimax(game_copy, 10, True)
+            
+            if evaluation < best_evaluation:
+                best_evaluation = evaluation
+                best_action = action_integer
+
+        return best_action
 
 def minimax(game, depth, is_maximizing_player):
     if depth == 0 or not game.is_running:
