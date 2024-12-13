@@ -9,7 +9,7 @@ class Game:
         self.priority = self.turn
         self.phase = "Draw"
         self.is_running = True
-        self.log_actions = True
+        self.log_actions = False
         self.is_copy = False
     
     def __str__(self):

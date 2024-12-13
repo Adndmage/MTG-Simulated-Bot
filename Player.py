@@ -4,7 +4,7 @@ from random import shuffle
 class Player:
     def __init__(self, name):
         self.name = name
-        self.life_total = 5
+        self.life_total = 20
         self.library = (
             [Gameobject("Mountain", "Land", 0) for _ in range(16)] +
             [Gameobject("Hulking Goblin", "Creature", 2, power=2, toughness=2) for _ in range(12)] +
