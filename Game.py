@@ -74,6 +74,9 @@ class Game:
         hulking_goblin_battlefield = next((card for card in self.players[player_integer].battlefield if card.name == "Hulking Goblin" and not card.summoning_sick), None)
         hulking_goblin_battlefield_opponent = next((card for card in self.players[(player_integer + 1) % 2].battlefield if card.name == "Hulking Goblin"), None)
         
+        if hulking_goblin_battlefield and self.turn == player_integer and self.phase == "Attackers":
+            action_list.append(6)
+
         if mountain and not self.players[player_integer].land_has_been_played and self.turn == player_integer and (self.phase == "Main 1" or self.phase == "Main 2"):
             action_list.append(2)
         
@@ -85,9 +88,6 @@ class Game:
             
             if hulking_goblin_battlefield_opponent:
                 action_list.append(5)
-        
-        if hulking_goblin_battlefield and self.turn == player_integer and self.phase == "Attackers":
-            action_list.append(6)
 
         action_list.append(1)
 
@@ -97,7 +97,7 @@ class Game:
         player = self.players[self.priority]
         
         if action_integer not in self.get_possible_actions(self.priority):
-            if not self.is_temporary: print(f"Action cannot be performed by {player.name}")
+            if not self.is_temporary: print(f"Action {action_integer} cannot be performed by {player.name}")
             return
 
         if action_integer == 1:
