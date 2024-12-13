@@ -9,7 +9,7 @@ def computer_ai(game, player_integer):
 
     action_list = game.get_possible_actions(player_integer)
     if len(action_list) == 1:
-        return action_list[0]
+        return [action_list[0], count]
 
     if player_integer == 1:
         best_evaluation = -10000
@@ -19,13 +19,13 @@ def computer_ai(game, player_integer):
             game_copy = deepcopy(game)
             game_copy.is_temporary = True
             game_copy.perform_gameaction(action_integer)
-            evaluation = minimax(game_copy, 15, -10000, 10000, False)
+            evaluation = minimax(game_copy, 16, -10000, 10000, False)
             
             if evaluation > best_evaluation:
                 best_evaluation = evaluation
                 best_action = action_integer
         print(count)
-        return best_action
+        return [best_action, count]
     else:
         best_evaluation = 10000
         best_action = None
@@ -34,13 +34,13 @@ def computer_ai(game, player_integer):
             game_copy = deepcopy(game)
             game_copy.is_temporary = True
             game_copy.perform_gameaction(action_integer)
-            evaluation = minimax(game_copy, 15, -10000, 10000, True)
+            evaluation = minimax(game_copy, 16, -10000, 10000, True)
             
             if evaluation < best_evaluation:
                 best_evaluation = evaluation
                 best_action = action_integer
         print(count)
-        return best_action
+        return [best_action, count]
 
 def minimax(game, depth, alpha, beta, is_maximizing_player):
     global count

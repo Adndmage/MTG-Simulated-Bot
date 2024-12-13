@@ -11,6 +11,7 @@ screen = pg.display.set_mode((1600, 900))
 clock = pg.time.Clock()
 running = True
 game = setup_game()
+max_count = 0
 
 # Sprites
 # Library card backs
@@ -59,13 +60,18 @@ while running:
     
     if game.priority == 0 and game.is_running: # if computer 0's turn
         computer_action = computer_ai(game, 0)
-        game.perform_gameaction(computer_action)
+        max_count = max(computer_action[1], max_count)
+        game.perform_gameaction(computer_action[0])
         # computer_random(game)
 
     if game.priority == 1 and game.is_running: # if computer 1's turn
         computer_action = computer_ai(game, 1)
-        game.perform_gameaction(computer_action)
+        max_count = max(computer_action[1], max_count)
+        game.perform_gameaction(computer_action[0])
         # computer_random(game)
+    
+    if not game.is_running:
+        print(f"Minimax count: {max_count}")
 
     screen.fill("#E5E4E2") # Light gray background
 
