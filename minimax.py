@@ -1,15 +1,15 @@
 from Game import *
 from copy import deepcopy
 
-count = 0
+# count = 0
 
 def computer_ai(game, player_integer):
-    global count
-    count = 0
+    # global count
+    # count = 0
 
     action_list = game.get_possible_actions(player_integer)
     if len(action_list) == 1:
-        return [action_list[0], count]
+        return action_list[0] # count]
 
     if player_integer == 1:
         best_evaluation = -10000
@@ -19,13 +19,13 @@ def computer_ai(game, player_integer):
             game_copy = deepcopy(game)
             game_copy.is_copy = True
             game_copy.perform_gameaction(action_integer)
-            evaluation = minimax(game_copy, 14, -10000, 10000, False)
+            evaluation = minimax(game_copy, 13, -10000, 10000, False)
             
             if evaluation > best_evaluation:
                 best_evaluation = evaluation
                 best_action = action_integer
-
-        return [best_action, count]
+        
+        return best_action # count]
     else:
         best_evaluation = 10000
         best_action = 1
@@ -34,17 +34,17 @@ def computer_ai(game, player_integer):
             game_copy = deepcopy(game)
             game_copy.is_copy = True
             game_copy.perform_gameaction(action_integer)
-            evaluation = minimax(game_copy, 14, -10000, 10000, True)
+            evaluation = minimax(game_copy, 13, -10000, 10000, True)
             
             if evaluation < best_evaluation:
                 best_evaluation = evaluation
                 best_action = action_integer
         
-        return [best_action, count]
+        return best_action # count]
 
 def minimax(game, depth, alpha, beta, is_maximizing_player):
-    global count
-    count += 1
+    # global count
+    # count += 1
 
     if depth == 0 or not game.is_running:
         return evaluate(game)
@@ -57,23 +57,30 @@ def minimax(game, depth, alpha, beta, is_maximizing_player):
         for action in game.get_possible_actions(current_player):
             game_copy = deepcopy(game)
             game_copy.perform_gameaction(action)
+
             evaluation = minimax(game_copy, depth - 1, alpha, beta, False)
             max_evaluation = max(max_evaluation, evaluation)
-            alpha = max(alpha, max_evaluation)
+            alpha = max(alpha, evaluation)
+
             if beta <= alpha:
                 break
+        
         return max_evaluation
+    
     else:
         min_evaluation = 10000
 
         for action in game.get_possible_actions(current_player):
             game_copy = deepcopy(game)
             game_copy.perform_gameaction(action)
+
             evaluation = minimax(game_copy, depth - 1, alpha, beta, True)
             min_evaluation = min(min_evaluation, evaluation)
-            beta = min(beta, min_evaluation)
+            beta = min(beta, evaluation)
+
             if beta <= alpha:
                 break
+        
         return min_evaluation
 
 def evaluate(game):
@@ -82,22 +89,22 @@ def evaluate(game):
     elif game.players[0].life_total <= 0 and not game.is_running:
         return 100000
 
-    evaluation = 5*game.players[1].life_total - 5*game.players[0].life_total
-    # evaluation += len(game.players[1].hand) - len(game.players[0].hand)
+    evaluation = 5*(game.players[1].life_total - game.players[0].life_total)
+    evaluation += len(game.players[1].hand) - len(game.players[0].hand)
 
     for card in game.players[1].hand:
-        if card.name == "Hulking Goblin":
-            evaluation += 9
-        elif card.name == "Lightning Bolt":
+        if card.name == "Lightning Bolt":
             evaluation += 16
+        elif card.name == "Hulking Goblin":
+            evaluation += 9
         else:
             evaluation += 10
     
     for card in game.players[0].hand:
-        if card.name == "Hulking Goblin":
-            evaluation -= 9
-        elif card.name == "Lightning Bolt":
+        if card.name == "Lightning Bolt":
             evaluation -= 16
+        elif card.name == "Hulking Goblin":
+            evaluation -= 9
         else:
             evaluation -= 10
 

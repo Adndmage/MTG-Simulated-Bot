@@ -83,12 +83,12 @@ class Game:
         
         if hulking_goblin_hand and self.players[player_integer].mana_check(2) and self.turn == player_integer and (self.phase == "Main 1" or self.phase == "Main 2"):
             action_list.append(3)
-        
+
+        if lightning_bolt and hulking_goblin_battlefield_opponent and self.players[player_integer].mana_check(1):
+                action_list.append(5)
+
         if lightning_bolt and self.players[player_integer].mana_check(1):
             action_list.append(4)
-            
-            if hulking_goblin_battlefield_opponent:
-                action_list.append(5)
 
         action_list.append(1)
         

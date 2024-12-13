@@ -3,8 +3,8 @@ from Player import *
 from sprites import CardSprite
 
 def setup_game():
-    player_1 = Player("Player 1")
-    player_2 = Player("AI Bot")
+    player_1 = Player("Player")
+    player_2 = Player("Minimax AI")
 
     player_1.shuffle_library()
     player_2.shuffle_library()

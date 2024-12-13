@@ -10,6 +10,31 @@ class Player:
             [Gameobject("Hulking Goblin", "Creature", 2, power=2, toughness=2) for _ in range(12)] +
             [Gameobject("Lightning Bolt", "Instant", 1) for _ in range(12)]
         )
+
+        # # Preset 20 card deck list for testing
+        # self.library = [
+        #     Gameobject("Lightning Bolt", "Instant", 1),
+        #     Gameobject("Lightning Bolt", "Instant", 1),
+        #     Gameobject("Hulking Goblin", "Creature", 2, power=2, toughness=2),
+        #     Gameobject("Lightning Bolt", "Instant", 1),
+        #     Gameobject("Hulking Goblin", "Creature", 2, power=2, toughness=2),
+        #     Gameobject("Mountain", "Land", 0),
+        #     Gameobject("Hulking Goblin", "Creature", 2, power=2, toughness=2),
+        #     Gameobject("Lightning Bolt", "Instant", 1),
+        #     Gameobject("Hulking Goblin", "Creature", 2, power=2, toughness=2),
+        #     Gameobject("Mountain", "Land", 0),
+        #     Gameobject("Lightning Bolt", "Instant", 1),
+        #     Gameobject("Hulking Goblin", "Creature", 2, power=2, toughness=2),
+        #     Gameobject("Mountain", "Land", 0),
+        #     Gameobject("Lightning Bolt", "Instant", 1),
+        #     Gameobject("Lightning Bolt", "Instant", 1),
+        #     Gameobject("Hulking Goblin", "Creature", 2, power=2, toughness=2),
+        #     Gameobject("Hulking Goblin", "Creature", 2, power=2, toughness=2),
+        #     Gameobject("Mountain", "Land", 0),
+        #     Gameobject("Mountain", "Land", 0),
+        #     Gameobject("Mountain", "Land", 0)
+        # ]
+        
         self.hand = []
         self.battlefield = []
         self.priority_passed = False # Checks if player has passed priority in the current phase
