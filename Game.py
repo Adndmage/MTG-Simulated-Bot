@@ -9,7 +9,8 @@ class Game:
         self.priority = self.turn
         self.phase = "Draw"
         self.is_running = True
-        self.is_temporary = False
+        self.log_actions = True
+        self.is_copy = False
     
     def __str__(self):
         return f"It is currently {self.players[self.turn]}'s turn in the {self.phase} phase"
@@ -52,8 +53,8 @@ class Game:
     
     def check_gameover(self):
         for player in self.players:
-            if player.life_total <= 0 and not self.is_temporary:
-                print(f"{player.name} has lost the game!")
+            if player.life_total <= 0:
+                if not self.is_copy: print(f"{player.name} has lost the game!")
                 self.is_running = False
 
     def combat_damage(self):
@@ -82,7 +83,7 @@ class Game:
         
         if hulking_goblin_hand and self.players[player_integer].mana_check(2) and self.turn == player_integer and (self.phase == "Main 1" or self.phase == "Main 2"):
             action_list.append(3)
-
+        
         if lightning_bolt and self.players[player_integer].mana_check(1):
             action_list.append(4)
             
@@ -90,40 +91,40 @@ class Game:
                 action_list.append(5)
 
         action_list.append(1)
-
+        
         return action_list
 
     def perform_gameaction(self, action_integer):
         player = self.players[self.priority]
         
         if action_integer not in self.get_possible_actions(self.priority):
-            if not self.is_temporary: print(f"Action {action_integer} cannot be performed by {player.name}")
+            if self.log_actions and not self.is_copy: print(f"Action {action_integer} cannot be performed by {player.name}")
             return
 
         if action_integer == 1:
             self.pass_priority(player)
-            if not self.is_temporary: print(f"{player.name} passed priority")
+            if self.log_actions and not self.is_copy: print(f"{player.name} passed priority")
 
         elif action_integer == 2:
             player.play_mountain()
-            if not self.is_temporary: print(f"{player.name} played Mountain")
+            if self.log_actions and not self.is_copy: print(f"{player.name} played Mountain")
 
         elif action_integer == 3:
             player.play_hulking_goblin()
-            if not self.is_temporary: print(f"{player.name} played Hulking Goblin")
+            if self.log_actions and not self.is_copy: print(f"{player.name} played Hulking Goblin")
 
         elif action_integer == 4:
             self.play_lightning_bolt_damage(player)
-            if not self.is_temporary: print(f"{player.name} played Lightning Bolt dealing damage")
+            if self.log_actions and not self.is_copy: print(f"{player.name} played Lightning Bolt dealing damage")
 
         elif action_integer == 5:
             self.play_lightning_bolt_destroy(player)
-            if not self.is_temporary: print(f"{player.name} played Lightning Bolt destroying a creature")
+            if self.log_actions and not self.is_copy: print(f"{player.name} played Lightning Bolt destroying a creature")
 
         elif action_integer == 6:
             player.attack_with_all()
             self.pass_priority(player)
-            if not self.is_temporary: print(f"{player.name} attacked with all")
+            if self.log_actions and not self.is_copy: print(f"{player.name} attacked with all")
     
     # Plays a lightning bolt dealing damage to the opponent
     def play_lightning_bolt_damage(self, player):

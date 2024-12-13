@@ -13,33 +13,33 @@ def computer_ai(game, player_integer):
 
     if player_integer == 1:
         best_evaluation = -10000
-        best_action = None
+        best_action = 1
 
         for action_integer in action_list:
             game_copy = deepcopy(game)
-            game_copy.is_temporary = True
+            game_copy.is_copy = True
             game_copy.perform_gameaction(action_integer)
-            evaluation = minimax(game_copy, 16, -10000, 10000, False)
+            evaluation = minimax(game_copy, 14, -10000, 10000, False)
             
             if evaluation > best_evaluation:
                 best_evaluation = evaluation
                 best_action = action_integer
-        print(count)
+
         return [best_action, count]
     else:
         best_evaluation = 10000
-        best_action = None
+        best_action = 1
 
         for action_integer in action_list:
             game_copy = deepcopy(game)
-            game_copy.is_temporary = True
+            game_copy.is_copy = True
             game_copy.perform_gameaction(action_integer)
-            evaluation = minimax(game_copy, 16, -10000, 10000, True)
+            evaluation = minimax(game_copy, 14, -10000, 10000, True)
             
             if evaluation < best_evaluation:
                 best_evaluation = evaluation
                 best_action = action_integer
-        print(count)
+        
         return [best_action, count]
 
 def minimax(game, depth, alpha, beta, is_maximizing_player):
@@ -77,24 +77,40 @@ def minimax(game, depth, alpha, beta, is_maximizing_player):
         return min_evaluation
 
 def evaluate(game):
-    if game.players[1].life_total <= 0:
-        return -1000
-    elif game.players[0].life_total <= 0:
-        return 1000
+    if game.players[1].life_total <= 0 and not game.is_running:
+        return -100000
+    elif game.players[0].life_total <= 0 and not game.is_running:
+        return 100000
 
-    evaluation = game.players[1].life_total - game.players[0].life_total
-    evaluation += len(game.players[1].hand) - len(game.players[0].hand)
+    evaluation = 5*game.players[1].life_total - 5*game.players[0].life_total
+    # evaluation += len(game.players[1].hand) - len(game.players[0].hand)
+
+    for card in game.players[1].hand:
+        if card.name == "Hulking Goblin":
+            evaluation += 9
+        elif card.name == "Lightning Bolt":
+            evaluation += 16
+        else:
+            evaluation += 10
+    
+    for card in game.players[0].hand:
+        if card.name == "Hulking Goblin":
+            evaluation -= 9
+        elif card.name == "Lightning Bolt":
+            evaluation -= 16
+        else:
+            evaluation -= 10
 
     for card in game.players[1].battlefield:
         if card.name == "Mountain":
-            evaluation += 2
+            evaluation += 20
         if card.name == "Hulking Goblin":
-            evaluation += 4
+            evaluation += 50
     
     for card in game.players[0].battlefield:
         if card.name == "Mountain":
-            evaluation -= 2
+            evaluation -= 20
         if card.name == "Hulking Goblin":
-            evaluation -= 4
+            evaluation -= 50
 
     return evaluation
