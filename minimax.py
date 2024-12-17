@@ -19,7 +19,7 @@ def computer_ai(game, player_integer):
             game_copy = deepcopy(game)
             game_copy.is_copy = True
             game_copy.perform_gameaction(action_integer)
-            evaluation = minimax(game_copy, 13, -10000, 10000, False)
+            evaluation = minimax(game_copy, 5, -10000, 10000, False)
             
             if evaluation > best_evaluation:
                 best_evaluation = evaluation
@@ -34,7 +34,7 @@ def computer_ai(game, player_integer):
             game_copy = deepcopy(game)
             game_copy.is_copy = True
             game_copy.perform_gameaction(action_integer)
-            evaluation = minimax(game_copy, 13, -10000, 10000, True)
+            evaluation = minimax(game_copy, 5, -10000, 10000, True)
             
             if evaluation < best_evaluation:
                 best_evaluation = evaluation
@@ -88,13 +88,13 @@ def evaluate(game):
         return -100000
     elif game.players[0].life_total <= 0 and not game.is_running:
         return 100000
-
+    
     evaluation = 5*(game.players[1].life_total - game.players[0].life_total)
-    evaluation += len(game.players[1].hand) - len(game.players[0].hand)
+    # evaluation += len(game.players[1].hand) - len(game.players[0].hand)
 
     for card in game.players[1].hand:
         if card.name == "Lightning Bolt":
-            evaluation += 16
+            evaluation += 21 # To make even lower depths cast Bolt less unless there's a win
         elif card.name == "Hulking Goblin":
             evaluation += 9
         else:
@@ -102,7 +102,7 @@ def evaluate(game):
     
     for card in game.players[0].hand:
         if card.name == "Lightning Bolt":
-            evaluation -= 16
+            evaluation -= 21
         elif card.name == "Hulking Goblin":
             evaluation -= 9
         else:

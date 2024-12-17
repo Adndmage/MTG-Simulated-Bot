@@ -9,8 +9,8 @@ class Game:
         self.priority = self.turn
         self.phase = "Draw"
         self.is_running = True
-        self.log_actions = False
         self.is_copy = False
+        self.log_actions = False
     
     def __str__(self):
         return f"It is currently {self.players[self.turn]}'s turn in the {self.phase} phase"
@@ -49,7 +49,6 @@ class Game:
             self.players[0].priority_passed = False
             self.players[1].priority_passed = False
             self.change_phase()
-        return True
     
     def check_gameover(self):
         for player in self.players:
@@ -65,7 +64,7 @@ class Game:
                 opponent.life_total -= card.power
         self.check_gameover()
     
-    def get_possible_actions(self, player_integer) -> list:
+    def get_possible_actions(self, player_integer):
         action_list = []
 
         # Checks hand and battlefield for the specific cards
@@ -75,6 +74,7 @@ class Game:
         hulking_goblin_battlefield = next((card for card in self.players[player_integer].battlefield if card.name == "Hulking Goblin" and not card.summoning_sick), None)
         hulking_goblin_battlefield_opponent = next((card for card in self.players[(player_integer + 1) % 2].battlefield if card.name == "Hulking Goblin"), None)
         
+        # Ordering of actions based on what is most likely to be good generally
         if hulking_goblin_battlefield and self.turn == player_integer and self.phase == "Attackers":
             action_list.append(6)
 
@@ -87,10 +87,10 @@ class Game:
         if lightning_bolt and hulking_goblin_battlefield_opponent and self.players[player_integer].mana_check(1):
                 action_list.append(5)
 
+        action_list.append(1)
+
         if lightning_bolt and self.players[player_integer].mana_check(1):
             action_list.append(4)
-
-        action_list.append(1)
         
         return action_list
 
@@ -115,7 +115,7 @@ class Game:
 
         elif action_integer == 4:
             self.play_lightning_bolt_damage(player)
-            if self.log_actions and not self.is_copy: print(f"{player.name} played Lightning Bolt dealing damage")
+            if not self.is_copy: print(f"{player.name} played Lightning Bolt dealing damage")
 
         elif action_integer == 5:
             self.play_lightning_bolt_destroy(player)

@@ -7,12 +7,10 @@ class Gameobject:
         
         # Only relevant for creatures
         self.power = power
-        self.toughness = toughness
-        self.is_attacking = None 
+        self.toughness = toughness 
         self.summoning_sick = None
         if self.card_type == "Creature": 
             self.summoning_sick = True
-            self.is_attacking = False
     
     def __str__(self):
         return f"{self.name} is of the card type {self.card_type} and has a mana value of {self.mana_value}"
