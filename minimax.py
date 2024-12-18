@@ -1,15 +1,11 @@
 from Game import *
 from copy import deepcopy
 
-# count = 0
-
 def computer_ai(game, player_integer):
-    # global count
-    # count = 0
 
     action_list = game.get_possible_actions(player_integer)
     if len(action_list) == 1:
-        return action_list[0] # count]
+        return action_list[0]
 
     if player_integer == 1:
         best_evaluation = -10000
@@ -19,13 +15,13 @@ def computer_ai(game, player_integer):
             game_copy = deepcopy(game)
             game_copy.is_copy = True
             game_copy.perform_gameaction(action_integer)
-            evaluation = minimax(game_copy, 5, -10000, 10000, False)
+            evaluation = minimax(game_copy, 10, -10000, 10000, False)
             
             if evaluation > best_evaluation:
                 best_evaluation = evaluation
                 best_action = action_integer
         
-        return best_action # count]
+        return best_action
     else:
         best_evaluation = 10000
         best_action = 1
@@ -34,18 +30,15 @@ def computer_ai(game, player_integer):
             game_copy = deepcopy(game)
             game_copy.is_copy = True
             game_copy.perform_gameaction(action_integer)
-            evaluation = minimax(game_copy, 5, -10000, 10000, True)
+            evaluation = minimax(game_copy, 10, -10000, 10000, True)
             
             if evaluation < best_evaluation:
                 best_evaluation = evaluation
                 best_action = action_integer
         
-        return best_action # count]
+        return best_action
 
 def minimax(game, depth, alpha, beta, is_maximizing_player):
-    # global count
-    # count += 1
-
     if depth == 0 or not game.is_running:
         return evaluate(game)
 

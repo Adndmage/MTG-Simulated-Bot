@@ -11,8 +11,6 @@ screen = pg.display.set_mode((1600, 900))
 clock = pg.time.Clock()
 running = True
 game = setup_game()
-# max_count = 0
-# print(f'Starting player: {game.players[game.turn].name}')
 
 # Sprites
 # Library card backs
@@ -47,35 +45,30 @@ while running:
         if event.type == pg.KEYDOWN and event.key == pg.K_r and not game.is_running:
             game = setup_game()
         
-        # # Registers which action is trying to be performed
-        # if game.priority == 0 and event.type == pg.KEYDOWN and game.is_running: # if player's turn
-        #     if event.key == pg.K_1:
-        #         game.perform_gameaction(1)
-        #     if event.key == pg.K_2:
-        #         game.perform_gameaction(2)
-        #     if event.key == pg.K_3:
-        #         game.perform_gameaction(3)
-        #     if event.key == pg.K_4:
-        #         game.perform_gameaction(4)
-        #     if event.key == pg.K_5:
-        #         game.perform_gameaction(5)
-        #     if event.key == pg.K_6:
-        #         game.perform_gameaction(6)
+        # Registers which action is trying to be performed
+        if game.priority == 0 and event.type == pg.KEYDOWN and game.is_running: # if player's turn
+            if event.key == pg.K_1:
+                game.perform_gameaction(1)
+            if event.key == pg.K_2:
+                game.perform_gameaction(2)
+            if event.key == pg.K_3:
+                game.perform_gameaction(3)
+            if event.key == pg.K_4:
+                game.perform_gameaction(4)
+            if event.key == pg.K_5:
+                game.perform_gameaction(5)
+            if event.key == pg.K_6:
+                game.perform_gameaction(6)
     
-    if game.priority == 0 and game.is_running: # if computer 0's turn
-        computer_action = computer_ai(game, 0)
-        # max_count = max(computer_action, max_count)
-        game.perform_gameaction(computer_action)
-        # computer_random(game)
+    # if game.priority == 0 and game.is_running: # if computer 0's turn
+    #     computer_action = computer_ai(game, 0)
+    #     game.perform_gameaction(computer_action)
+    #     # computer_random(game)
 
     if game.priority == 1 and game.is_running: # if computer 1's turn
         computer_action = computer_ai(game, 1)
-        # max_count = max(computer_action[1], max_count)
         game.perform_gameaction(computer_action) # [0]
         # computer_random(game)
-    
-    # if not game.is_running:
-    #     print(f"Minimax count: {max_count}")
 
     screen.fill("#C8C8C8") # Light gray background
 

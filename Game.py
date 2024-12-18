@@ -10,7 +10,7 @@ class Game:
         self.phase = "Draw"
         self.is_running = True
         self.is_copy = False
-        self.log_actions = False
+        self.log_actions = True
     
     def __str__(self):
         return f"It is currently {self.players[self.turn]}'s turn in the {self.phase} phase"
@@ -115,7 +115,7 @@ class Game:
 
         elif action_integer == 4:
             self.play_lightning_bolt_damage(player)
-            if not self.is_copy: print(f"{player.name} played Lightning Bolt dealing damage")
+            if self.log_actions and not self.is_copy: print(f"{player.name} played Lightning Bolt dealing damage")
 
         elif action_integer == 5:
             self.play_lightning_bolt_destroy(player)
