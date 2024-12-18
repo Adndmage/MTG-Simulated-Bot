@@ -13,7 +13,7 @@ def computer_ai(game, player_integer):
 
         for action_integer in action_list:
             game_copy = deepcopy(game)
-            game_copy.is_copy = True
+            game_copy.turn_to_copy()
             game_copy.perform_gameaction(action_integer)
             evaluation = minimax(game_copy, 10, -10000, 10000, False)
             
@@ -28,7 +28,7 @@ def computer_ai(game, player_integer):
 
         for action_integer in action_list:
             game_copy = deepcopy(game)
-            game_copy.is_copy = True
+            game_copy.turn_to_copy()
             game_copy.perform_gameaction(action_integer)
             evaluation = minimax(game_copy, 10, -10000, 10000, True)
             

@@ -46,7 +46,7 @@ while running:
             game = setup_game()
         
         # Registers which action is trying to be performed
-        if game.priority == 0 and event.type == pg.KEYDOWN and game.is_running: # if player's turn
+        if game.get_priority() == 0 and event.type == pg.KEYDOWN and game.is_running: # if player's turn
             if event.key == pg.K_1:
                 game.perform_gameaction(1)
             if event.key == pg.K_2:
@@ -60,12 +60,12 @@ while running:
             if event.key == pg.K_6:
                 game.perform_gameaction(6)
     
-    # if game.priority == 0 and game.is_running: # if computer 0's turn
+    # if game.get_priority() == 0 and game.is_running: # if computer 0's turn
     #     computer_action = computer_ai(game, 0)
     #     game.perform_gameaction(computer_action)
     #     # computer_random(game)
 
-    if game.priority == 1 and game.is_running: # if computer 1's turn
+    if game.get_priority() == 1 and game.is_running: # if computer 1's turn
         computer_action = computer_ai(game, 1)
         game.perform_gameaction(computer_action) # [0]
         # computer_random(game)
@@ -88,21 +88,21 @@ while running:
     dynamic_text.add(FontSprite(140, 220, str(len(game.players[1].library)), "lucidasanstypewriter", 40, color="#FFFFFF"))
     
     # Updates life totals
-    if game.priority == 0:
+    if game.get_priority() == 0:
         dynamic_text.add(FontSprite(140, 520, f"Life: {game.players[0].life_total}", "lucidasanstypewriter", 50, color="#FF0000"))
         dynamic_text.add(FontSprite(140, 380, f"Life: {game.players[1].life_total}", "lucidasanstypewriter", 50))
-    elif game.priority == 1:
+    elif game.get_priority() == 1:
         dynamic_text.add(FontSprite(140, 520, f"Life: {game.players[0].life_total}", "lucidasanstypewriter", 50))
         dynamic_text.add(FontSprite(140, 380, f"Life: {game.players[1].life_total}", "lucidasanstypewriter", 50, color="#FF0000"))
     
     # Updates turn information
-    if game.turn == 0:
+    if game.get_turn() == 0:
         dynamic_text.add(FontSprite(1440, 550, f"{game.players[0].name}", "lucidasanstypewriterregular", 40))
-    elif game.turn == 1:
+    elif game.get_turn() == 1:
         dynamic_text.add(FontSprite(1440, 550, f"{game.players[1].name}", "lucidasanstypewriterregular", 40))
 
     # Updates phase information
-    dynamic_text.add(FontSprite(1440, 690, game.phase, "lucidasanstypewriterregular", 40))
+    dynamic_text.add(FontSprite(1440, 690, game.get_phase(), "lucidasanstypewriterregular", 40))
 
     # Updates cards in hand and on field
     cards.empty()

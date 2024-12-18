@@ -4,11 +4,11 @@ import pygame as pg
 class CardSprite(pg.sprite.Sprite):
     def __init__(self, x, y, zoom, name, is_tapped=False):
         super().__init__()
-        self.name = name
-        self.is_tapped = is_tapped
-        self.image = pg.image.load(f"images/cards/{self.name}.png")
+        self.__name = name
+        self.__is_tapped = is_tapped
+        self.image = pg.image.load(f"images/cards/{self.__name}.png")
 
-        if self.is_tapped:
+        if self.__is_tapped:
             self.image = pg.transform.rotozoom(self.image, -90, zoom)
         else:
             self.image = pg.transform.rotozoom(self.image, 0, zoom)
